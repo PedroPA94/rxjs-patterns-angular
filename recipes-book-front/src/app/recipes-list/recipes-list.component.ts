@@ -8,23 +8,9 @@ import { Subject, takeUntil } from 'rxjs';
   templateUrl: './recipes-list.component.html',
   styleUrls: ['./recipes-list.component.scss'],
 })
-export class RecipesListComponent implements OnInit, OnDestroy {
+export class RecipesListComponent {
 
-  recipes!: Recipe[];
-  destroy$ = new Subject<void>();
+  recipes$ = this.service.recipes$;
 
   constructor(private service: RecipesService) { }
-
-  ngOnInit(): void {
-    this.service.getRecipes()
-    .pipe(takeUntil(this.destroy$))
-    .subscribe((result => {
-      this.recipes = result;
-    }))
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 }
